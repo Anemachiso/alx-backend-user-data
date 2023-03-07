@@ -61,4 +61,5 @@ class Auth:
             Return:
                 The user
         """
+
         return user
