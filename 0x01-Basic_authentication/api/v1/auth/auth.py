@@ -1,65 +1,34 @@
 #!/usr/bin/env python3
-""" Module of auth
 """
+API authentication module
+"""
+
 from flask import request
 from typing import List, TypeVar
 
 
 class Auth:
-    """ Auth Class """
-
-    def __init__(self):
-        """
-            Constructor
-            Args:
-                path: path to authenticate
-                excluded_paths: list of excluded path to authenticate
-        """
+    """ Authentication """
 
     def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
-        """
-            Require the auth
-            Args:
-                path: path to authenticate
-                excluded_paths: list of excluded path to authenticate
-            Return:
-                True if is authenticated otherwise false
-        """
+        """ Checks if API routes require authentication """
         if path is None or excluded_paths is None or len(excluded_paths) == 0:
             return True
-
-        if path[-1] is not '/':
+        if path[-1] != '/':
             path += '/'
-
-        for paths in excluded_paths:
-            if paths.endswith('*'):
-                if path.startswith(paths[:-1]):
-                    return False
-            elif path == paths:
-                return False
-
-        return True
+        if path in excluded_paths:
+            return False
+        else:
+            return True
 
     def authorization_header(self, request=None) -> str:
-        """
-            Look the headers
-            Args:
-                request: Look the autthorization
-            Return:
-                The authorization header or None
-        """
-        if request is None:
+        """ Checks if Authorization request header is present
+        & contains values """
+        if request is None or "Authorization" not in request.headers:
             return None
-
-        return request.headers.get('Authorization', None)
+        else:
+            return request.headers.get('Authorization')
 
     def current_user(self, request=None) -> TypeVar('User'):
-        """
-            Look current user
-            Args:
-                request: Look the reques user
-            Return:
-                The user
-        """
-
-        return user
+        """ placeholder """
+        return None
