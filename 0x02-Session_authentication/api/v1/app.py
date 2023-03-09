@@ -74,11 +74,11 @@ def before_request() -> str:
             and auth.session_cookie(request) is None:
         abort(401)
 
-    current_user = auth.current_user(request)
-    if current_user is None:
+    request.current_user = auth.current_user(request)
+
+    if request.current_user is None:
         abort(403)
 
-    request.current_user = current_user
 
 
 if __name__ == "__main__":
